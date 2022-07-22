@@ -8,7 +8,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with RestorationMixin {
-  late RestorableRouteFuture<String> _secondPageRoute;
+  late RestorableRouteFuture _secondPageRoute;
 
   @override
   void initState() {
@@ -16,14 +16,14 @@ class _HomePageState extends State<HomePage> with RestorationMixin {
 
     /// When expecting some result, instantiate a RestorableRouteFuture
     _secondPageRoute =
-        RestorableRouteFuture<String>(onPresent: (NavigatorState navigator, Object? arguments) {
+        RestorableRouteFuture(onPresent: (NavigatorState navigator, Object? arguments) {
       /// Use a "restorable" method from navigator to enable state restoration
       return navigator.restorablePushNamed(
         "/second",
         arguments: arguments,
       );
-    }, onComplete: (String result) {
-      showSnackBar(ScaffoldMessenger.of(context), result);
+    }, onComplete: (Object? result) {
+      showSnackBar(ScaffoldMessenger.of(context), result.toString());
     });
   }
 
