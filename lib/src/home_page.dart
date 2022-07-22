@@ -7,13 +7,32 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage> with RestorationMixin {
+  late RestorableRouteFuture<String> _secondPageRoute;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  @override
+  void initState() {
+    super.initState();
+
+    /// When expecting some result, instantiate a RestorableRouteFuture
+    _secondPageRoute =
+        RestorableRouteFuture<String>(onPresent: (NavigatorState navigator, Object? arguments) {
+      /// Use a "restorable" method from navigator to enable state restoration
+      return navigator.restorablePushNamed(
+        "/second",
+        arguments: arguments,
+      );
+    }, onComplete: (String result) {
+      showSnackBar(ScaffoldMessenger.of(context), result);
     });
+  }
+
+  void showSnackBar(ScaffoldMessengerState scaffoldMessengerState, String result) {
+    scaffoldMessengerState.showSnackBar(
+      SnackBar(
+        content: Text("Result: $result"),
+      ),
+    );
   }
 
   @override
@@ -26,21 +45,36 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            OutlinedButton(
+              onPressed: () async {
+                final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+                final result = await Navigator.of(context).pushNamed(
+                  "/second",
+                  arguments: {"title": "Without State Restoration"},
+                );
+
+                showSnackBar(scaffoldMessenger, result.toString());
+              },
+              child: const Text("Without state restoration"),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            OutlinedButton(
+              onPressed: () {
+                _secondPageRoute.present({"title": "With State Restoration"});
+              },
+              child: const Text("With state restoration"),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
+  }
+
+  @override
+  String? get restorationId => "home_page";
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_secondPageRoute, "second_page_route");
   }
 }
