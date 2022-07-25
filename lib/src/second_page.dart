@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SecondPage extends StatefulWidget {
   const SecondPage({Key? key, required this.title}) : super(key: key);
@@ -14,6 +13,7 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
   final RestorableInt _counter = RestorableInt(0);
   final RestorableTextEditingController _textEditingController = RestorableTextEditingController();
   final RestorableBool _checked = RestorableBool(false);
+  final RestorableString _text = RestorableString("");
 
   void _incrementCounter() {
     setState(() {
@@ -30,17 +30,17 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
       body: WillPopScope(
         onWillPop: () async {
           Navigator.of(context).pop(widget.title);
-
           return false;
         },
         child: ListView(
+          padding: const EdgeInsets.all(16),
           restorationId: "card_list",
 
           /// Restore scroll position
           children: <Widget>[
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(32),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -57,14 +57,18 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
             ),
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(32),
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
                   TextField(
                     controller: _textEditingController.value,
-                    decoration: const InputDecoration(
-                      label: Text("Insert some text here")
-                    ),
+                    decoration: const InputDecoration(label: Text("Insert some text here")),
+                    onSubmitted: (String text) {
+                      setState(() {
+                        _text.value = text;
+                      });
+                    },
                   ),
+                  Text("Submitted text: ${_text.value}"),
                   CheckboxListTile(
                     title: const Text("Check me!"),
                     value: _checked.value,
@@ -76,7 +80,7 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
                   ),
                 ]),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -95,7 +99,10 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
     /// Register properties that will be restored
     registerForRestoration(_counter, "counter");
-    registerForRestoration(_textEditingController, "text_field");
     registerForRestoration(_checked, "checkbox");
+    registerForRestoration(_text, "text");
+
+    /// Instead of below, you can just set restorationId on TextField
+    registerForRestoration(_textEditingController, "text_field");
   }
 }
