@@ -11,6 +11,8 @@ This is an example app of how to implement state restoration on Flutter.
 Operating systems like Android and iOS can kill the app's process when running low on resources like RAM.
 The instance state can be preserved and restored using State Restoration APIs like `RestorationMixin` and `restorablePush()`, for example.
 
+For more information about, visit [documentation](https://flutter.dev/go/state-restoration-design).
+
 ## How to test
 
 1. Enable "Don't keep activities" option in the developer menu on Android settings.
