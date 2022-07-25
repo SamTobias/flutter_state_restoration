@@ -14,6 +14,17 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
   final RestorableTextEditingController _textEditingController = RestorableTextEditingController();
   final RestorableBool _checked = RestorableBool(false);
   final RestorableString _text = RestorableString("");
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    // TODO: Add listview as page
+    Placeholder()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -81,8 +92,17 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
                 ]),
               ),
             ),
+            // TODO: Add more cards
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Main"),
+          BottomNavigationBarItem(icon: Icon(Icons.question_mark), label: "Secondary")
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
