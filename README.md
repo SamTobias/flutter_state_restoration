@@ -26,13 +26,14 @@ For more information about, visit [documentation](https://flutter.dev/go/state-r
 
 ## TODO
 
-- [X] Primitive properties
-- [X] Text Field
-- [X] Navigation
-  - [X] Passing arguments
-  - [X] Receiving result
-- [X] List (Scroll position)
-- [ ] Scaffold (Drawer)
-- [ ] Dialog
-- [ ] Tab
-- ~~[ ] Bottom Sheet~~ (No support; See [issue #70915](https://github.com/flutter/flutter/issues/70915))
+[X] Primitive properties
+[X] Text Field
+[X] Navigation
+  [X] Passing arguments
+  [X] Receiving result
+[X] List (Scroll position)
+[ ] Scaffold (Drawer)
+[ ] Dialog
+[ ] Bottom Navigation
+~~[ ] Bottom Sheet~~ (No support; See [issue #70915](https://github.com/flutter/flutter/issues/70915))
+[ ] Comparison with native implementations (Activity's onRestoreInstanceState/ViewModel's Saved State)
