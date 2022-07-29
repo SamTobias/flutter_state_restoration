@@ -14,10 +14,10 @@ class _HomePageState extends State<HomePage> with RestorationMixin {
   void initState() {
     super.initState();
 
-    /// When expecting some result, instantiate a RestorableRouteFuture
+    // When expecting some result, instantiate a RestorableRouteFuture
     _secondPageRoute =
         RestorableRouteFuture(onPresent: (NavigatorState navigator, Object? arguments) {
-      /// Use a "restorable" method from navigator to enable state restoration
+      // Use a "restorable" method from navigator to enable state restoration
       return navigator.restorablePushNamed(
         "/second",
         arguments: arguments,

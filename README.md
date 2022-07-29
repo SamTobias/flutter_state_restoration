@@ -9,7 +9,7 @@ This is an example app of how to implement state restoration on Flutter.
 ### What is state restoration?
 
 Operating systems like Android and iOS can kill the app's process when running low on resources like RAM.
-The instance state can be preserved and restored using State Restoration APIs like `RestorationMixin` and `restorablePush()`, for example.
+The instance state can be preserved and restored using State Restoration APIs, like `RestorationMixin` and `restorablePush()`, for example.
 
 For more information about, visit [documentation](https://flutter.dev/go/state-restoration-design).
 
@@ -32,9 +32,9 @@ For more information about, visit [documentation](https://flutter.dev/go/state-r
   - [X] Passing arguments
   - [X] Receiving result
 - [X] List (Scroll position)
+- [X] Bottom Navigation
 - [ ] Scaffold (Drawer)
 - [ ] Dialog
-- [ ] Bottom Navigation
 - [ ] Comparison with native implementations (Activity's onRestoreInstanceState/ViewModel's Saved State)
 
 Note: Currently, there is no state restoration support for Bottom Sheets (See [issue #70915](https://github.com/flutter/flutter/issues/70915))

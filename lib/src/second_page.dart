@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_state_restoration/src/list_tab.dart';
+import 'package:flutter_state_restoration/src/main_tab.dart';
 
 class SecondPage extends StatefulWidget {
   const SecondPage({Key? key, required this.title}) : super(key: key);
@@ -11,9 +13,14 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> with RestorationMixin {
   final RestorableInt _counter = RestorableInt(0);
-  final RestorableTextEditingController _textEditingController = RestorableTextEditingController();
-  final RestorableBool _checked = RestorableBool(false);
-  final RestorableString _text = RestorableString("");
+  final RestorableInt _selectedIndex = RestorableInt(0);
+  final List<String> items = List<String>.generate(10000, (i) => 'Item $i');
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex.value = index;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -32,57 +39,18 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
           Navigator.of(context).pop(widget.title);
           return false;
         },
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          restorationId: "card_list",
-
-          /// Restore scroll position
-          children: <Widget>[
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'You have pushed the button this many times:',
-                    ),
-                    Text(
-                      '${_counter.value}',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(32),
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-                  TextField(
-                    controller: _textEditingController.value,
-                    decoration: const InputDecoration(label: Text("Insert some text here")),
-                    onSubmitted: (String text) {
-                      setState(() {
-                        _text.value = text;
-                      });
-                    },
-                  ),
-                  Text("Submitted text: ${_text.value}"),
-                  CheckboxListTile(
-                    title: const Text("Check me!"),
-                    value: _checked.value,
-                    onChanged: (checked) {
-                      setState(() {
-                        _checked.value = checked ?? false;
-                      });
-                    },
-                  ),
-                ]),
-              ),
-            ),
-          ],
-        ),
+        child: [
+          MainTab(counter: _counter.value),
+          ListTab(items: items),
+        ].elementAt(_selectedIndex.value),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Main"),
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: "List")
+        ],
+        currentIndex: _selectedIndex.value,
+        onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
@@ -97,12 +65,8 @@ class _SecondPageState extends State<SecondPage> with RestorationMixin {
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    /// Register properties that will be restored
+    // Register properties that will be restored
     registerForRestoration(_counter, "counter");
-    registerForRestoration(_checked, "checkbox");
-    registerForRestoration(_text, "text");
-
-    /// Instead of below, you can just set restorationId on TextField
-    registerForRestoration(_textEditingController, "text_field");
+    registerForRestoration(_selectedIndex, "tab_index");
   }
 }
