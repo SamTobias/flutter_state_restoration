@@ -35,6 +35,6 @@ For more information about, visit [documentation](https://flutter.dev/go/state-r
 - [X] Bottom Navigation
 - [ ] Scaffold (Drawer)
 - [ ] Dialog
-- [ ] Comparison with native implementations (Activity's onRestoreInstanceState/ViewModel's Saved State)
+- [X] Comparison with native implementations (Activity's onRestoreInstanceState/ViewModel's Saved State)
 
 Note: Currently, there is no state restoration support for Bottom Sheets (See [issue #70915](https://github.com/flutter/flutter/issues/70915))
